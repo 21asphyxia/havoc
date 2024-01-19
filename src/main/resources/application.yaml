@@ -1,0 +1,22 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/havoc
+    username: asphyxia
+    password: secret
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  jooq:
+    sql-dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/havoc
+    user: asphyxia
+    password: secret

@@ -1,0 +1,382 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1705674937156-1
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: game_seq
+            startValue: 1
+  - changeSet:
+      id: 1705674937156-2
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: match_seq
+            startValue: 1
+  - changeSet:
+      id: 1705674937156-3
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_authority
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: authority
+  - changeSet:
+      id: 1705674937156-4
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_game
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: game
+  - changeSet:
+      id: 1705674937156-5
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_gameelo
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: game_id
+                  type: BIGINT
+              - column:
+                  name: elo
+                  type: INT
+            tableName: game_elo
+  - changeSet:
+      id: 1705674937156-6
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_match
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: date
+                  type: DATE
+              - column:
+                  name: first_player_id
+                  type: BIGINT
+              - column:
+                  name: second_player_id
+                  type: BIGINT
+              - column:
+                  name: game_id
+                  type: BIGINT
+              - column:
+                  name: result_id
+                  type: BIGINT
+            tableName: match
+  - changeSet:
+      id: 1705674937156-7
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_matchresult
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: winner_id
+                  type: BIGINT
+              - column:
+                  name: elo_gain
+                  type: INT
+              - column:
+                  name: elo_loss
+                  type: INT
+              - column:
+                  name: winner_score
+                  type: INT
+              - column:
+                  name: loser_score
+                  type: INT
+            tableName: match_result
+  - changeSet:
+      id: 1705674937156-8
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_reward
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: value
+                  type: DECIMAL(5, 2)
+            tableName: reward
+  - changeSet:
+      id: 1705674937156-9
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_role
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_default
+                  type: BOOLEAN
+            tableName: role
+  - changeSet:
+      id: 1705674937156-10
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: authorities_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: roles_id
+                  type: BIGINT
+            tableName: role_authorities
+  - changeSet:
+      id: 1705674937156-11
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueNumeric: !!float '0'
+                  name: currency
+                  type: integer
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role_id
+                  type: BIGINT
+            tableName: user
+  - changeSet:
+      id: 1705674937156-12
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: email
+            constraintName: uc_user_email
+            tableName: user
+  - changeSet:
+      id: 1705674937156-13
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: username
+            constraintName: uc_user_username
+            tableName: user
+  - changeSet:
+      id: 1705674937156-14
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: game_id
+            baseTableName: game_elo
+            constraintName: FK_GAMEELO_ON_GAME
+            referencedColumnNames: id
+            referencedTableName: game
+  - changeSet:
+      id: 1705674937156-15
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: game_elo
+            constraintName: FK_GAMEELO_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1705674937156-16
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: winner_id
+            baseTableName: match_result
+            constraintName: FK_MATCHRESULT_ON_WINNER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1705674937156-17
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: first_player_id
+            baseTableName: match
+            constraintName: FK_MATCH_ON_FIRST_PLAYER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1705674937156-18
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: game_id
+            baseTableName: match
+            constraintName: FK_MATCH_ON_GAME
+            referencedColumnNames: id
+            referencedTableName: game
+  - changeSet:
+      id: 1705674937156-19
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: result_id
+            baseTableName: match
+            constraintName: FK_MATCH_ON_RESULT
+            referencedColumnNames: id
+            referencedTableName: match_result
+  - changeSet:
+      id: 1705674937156-20
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: second_player_id
+            baseTableName: match
+            constraintName: FK_MATCH_ON_SECOND_PLAYER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1705674937156-21
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: reward
+            constraintName: FK_REWARD_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1705674937156-22
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: user
+            constraintName: FK_USER_ON_ROLE
+            referencedColumnNames: id
+            referencedTableName: role
+  - changeSet:
+      id: 1705674937156-23
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: authorities_id
+            baseTableName: role_authorities
+            constraintName: fk_rolaut_on_authority
+            referencedColumnNames: id
+            referencedTableName: authority
+  - changeSet:
+      id: 1705674937156-24
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: roles_id
+            baseTableName: role_authorities
+            constraintName: fk_rolaut_on_role
+            referencedColumnNames: id
+            referencedTableName: role
+
