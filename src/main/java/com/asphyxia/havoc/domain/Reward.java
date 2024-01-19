@@ -17,7 +17,7 @@ public class Reward {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private User user;
+    private Member member;
     @Column(precision = 5, scale = 2)
     private BigDecimal value;
 }

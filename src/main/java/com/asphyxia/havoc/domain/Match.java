@@ -19,9 +19,9 @@ public class Match {
     private Long id;
     private LocalDate date;
     @ManyToOne
-    private User firstPlayer;
+    private Member firstPlayer;
     @ManyToOne
-    private User secondPlayer;
+    private Member secondPlayer;
     @ManyToOne
     private Game game;
     @OneToOne

@@ -21,7 +21,7 @@ public class GameElo {
     @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    private User user;
+    private Member member;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

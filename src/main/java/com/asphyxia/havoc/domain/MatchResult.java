@@ -15,7 +15,7 @@ public class MatchResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private User winner;
+    private Member winner;
     private Integer eloGain;
     private Integer eloLoss;
     private Integer winnerScore;

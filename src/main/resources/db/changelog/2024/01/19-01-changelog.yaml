@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1705674937156-1
+      id: 1705679154993-1
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -9,7 +9,7 @@ databaseChangeLog:
             sequenceName: game_seq
             startValue: 1
   - changeSet:
-      id: 1705674937156-2
+      id: 1705679154993-2
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -18,7 +18,7 @@ databaseChangeLog:
             sequenceName: match_seq
             startValue: 1
   - changeSet:
-      id: 1705674937156-3
+      id: 1705679154993-3
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -37,7 +37,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: authority
   - changeSet:
-      id: 1705674937156-4
+      id: 1705679154993-4
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -55,7 +55,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: game
   - changeSet:
-      id: 1705674937156-5
+      id: 1705679154993-5
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -72,7 +72,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: user_id
+                  name: member_id
                   type: BIGINT
               - column:
                   constraints:
@@ -84,7 +84,7 @@ databaseChangeLog:
                   type: INT
             tableName: game_elo
   - changeSet:
-      id: 1705674937156-6
+      id: 1705679154993-6
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -114,7 +114,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: match
   - changeSet:
-      id: 1705674937156-7
+      id: 1705679154993-7
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -145,7 +145,39 @@ databaseChangeLog:
                   type: INT
             tableName: match_result
   - changeSet:
-      id: 1705674937156-8
+      id: 1705679154993-8
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_member
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueNumeric: !!float '0'
+                  name: currency
+                  type: integer
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role_id
+                  type: BIGINT
+            tableName: member
+  - changeSet:
+      id: 1705679154993-9
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -160,14 +192,14 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: user_id
+                  name: member_id
                   type: BIGINT
               - column:
                   name: value
                   type: DECIMAL(5, 2)
             tableName: reward
   - changeSet:
-      id: 1705674937156-9
+      id: 1705679154993-10
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -191,7 +223,7 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: role
   - changeSet:
-      id: 1705674937156-10
+      id: 1705679154993-11
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -209,57 +241,25 @@ databaseChangeLog:
                   type: BIGINT
             tableName: role_authorities
   - changeSet:
-      id: 1705674937156-11
-      author: Youcode (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_user
-                  name: id
-                  type: BIGINT
-              - column:
-                  defaultValueNumeric: !!float '0'
-                  name: currency
-                  type: integer
-              - column:
-                  name: username
-                  type: VARCHAR(255)
-              - column:
-                  name: email
-                  type: VARCHAR(255)
-              - column:
-                  name: password
-                  type: VARCHAR(255)
-              - column:
-                  name: role_id
-                  type: BIGINT
-            tableName: user
-  - changeSet:
-      id: 1705674937156-12
+      id: 1705679154993-12
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
             columnNames: email
-            constraintName: uc_user_email
-            tableName: user
+            constraintName: uc_member_email
+            tableName: member
   - changeSet:
-      id: 1705674937156-13
+      id: 1705679154993-13
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
             columnNames: username
-            constraintName: uc_user_username
-            tableName: user
+            constraintName: uc_member_username
+            tableName: member
   - changeSet:
-      id: 1705674937156-14
+      id: 1705679154993-14
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -270,18 +270,18 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: game
   - changeSet:
-      id: 1705674937156-15
+      id: 1705679154993-15
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: user_id
+            baseColumnNames: member_id
             baseTableName: game_elo
-            constraintName: FK_GAMEELO_ON_USER
+            constraintName: FK_GAMEELO_ON_MEMBER
             referencedColumnNames: id
-            referencedTableName: user
+            referencedTableName: member
   - changeSet:
-      id: 1705674937156-16
+      id: 1705679154993-16
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -290,9 +290,9 @@ databaseChangeLog:
             baseTableName: match_result
             constraintName: FK_MATCHRESULT_ON_WINNER
             referencedColumnNames: id
-            referencedTableName: user
+            referencedTableName: member
   - changeSet:
-      id: 1705674937156-17
+      id: 1705679154993-17
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -301,9 +301,9 @@ databaseChangeLog:
             baseTableName: match
             constraintName: FK_MATCH_ON_FIRST_PLAYER
             referencedColumnNames: id
-            referencedTableName: user
+            referencedTableName: member
   - changeSet:
-      id: 1705674937156-18
+      id: 1705679154993-18
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -314,7 +314,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: game
   - changeSet:
-      id: 1705674937156-19
+      id: 1705679154993-19
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -325,7 +325,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: match_result
   - changeSet:
-      id: 1705674937156-20
+      id: 1705679154993-20
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -334,31 +334,31 @@ databaseChangeLog:
             baseTableName: match
             constraintName: FK_MATCH_ON_SECOND_PLAYER
             referencedColumnNames: id
-            referencedTableName: user
+            referencedTableName: member
   - changeSet:
-      id: 1705674937156-21
-      author: Youcode (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: user_id
-            baseTableName: reward
-            constraintName: FK_REWARD_ON_USER
-            referencedColumnNames: id
-            referencedTableName: user
-  - changeSet:
-      id: 1705674937156-22
+      id: 1705679154993-21
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: role_id
-            baseTableName: user
-            constraintName: FK_USER_ON_ROLE
+            baseTableName: member
+            constraintName: FK_MEMBER_ON_ROLE
             referencedColumnNames: id
             referencedTableName: role
   - changeSet:
-      id: 1705674937156-23
+      id: 1705679154993-22
+      author: Youcode (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: member_id
+            baseTableName: reward
+            constraintName: FK_REWARD_ON_MEMBER
+            referencedColumnNames: id
+            referencedTableName: member
+  - changeSet:
+      id: 1705679154993-23
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -369,7 +369,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: authority
   - changeSet:
-      id: 1705674937156-24
+      id: 1705679154993-24
       author: Youcode (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
