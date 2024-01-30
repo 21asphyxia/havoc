@@ -1,5 +1,6 @@
 package com.asphyxia.havoc.controller.auth;
 
+import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.domain.RefreshToken;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
 import com.asphyxia.havoc.dto.requests.RegisterRequest;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -30,17 +33,15 @@ public class AuthenticationController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
-    public ResponseEntity<UserResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticate = authenticationService.authenticate(request);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, authenticate.token().toString())
-                .header(HttpHeaders.SET_COOKIE, authenticate.refreshToken().toString())
-                .body(authenticate.user());
+        return ResponseEntity.ok(authenticate);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        Member member = authenticationService.register(request.toMember());
+        return ResponseEntity.ok(UserResponse.fromUser(member));
     }
 
     @PostMapping("/refresh")

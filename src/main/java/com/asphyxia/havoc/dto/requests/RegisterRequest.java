@@ -1,5 +1,6 @@
 package com.asphyxia.havoc.dto.requests;
 
+import com.asphyxia.havoc.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,11 @@ public class RegisterRequest {
     private String email;
     private String password;
 
+    public Member toMember() {
+        return Member.builder()
+                .username(username)
+                .email(email)
+                .password(password)
+                .build();
+    }
 }

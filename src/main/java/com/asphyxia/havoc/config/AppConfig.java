@@ -1,4 +1,4 @@
-package com.asphyxia.havoc.security.config;
+package com.asphyxia.havoc.config;
 
 import com.asphyxia.havoc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

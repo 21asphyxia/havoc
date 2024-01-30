@@ -41,6 +41,13 @@ public class JwtUtils {
         return generateCookie(jwtRefreshCookie, refreshToken, "/api/v1/auth/refresh");
     }
 
+    public String getJwtFromHeader(String headerAuth) {
+        if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7);
+        }
+        return null;
+    }
+
     public String getJwtFromCookies(HttpServletRequest request) {
         return getCookieValueByName(request, jwtCookie);
     }
@@ -84,6 +91,7 @@ public class JwtUtils {
     }
 
     public String generateTokenFromUsername(String username) {
+        logger.info("Date: {}", (new Date()).getTime() + jwtExpirationMs);
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())

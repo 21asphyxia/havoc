@@ -1,24 +1,25 @@
 package com.asphyxia.havoc.service.impl;
 
 import com.asphyxia.havoc.domain.Member;
-import com.asphyxia.havoc.domain.RefreshToken;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
-import com.asphyxia.havoc.dto.requests.RegisterRequest;
 import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
 import com.asphyxia.havoc.dto.responses.UserResponse;
 import com.asphyxia.havoc.repository.UserRepository;
 import com.asphyxia.havoc.security.jwt.JwtUtils;
 import com.asphyxia.havoc.security.jwt.service.RefreshTokenService;
+import com.asphyxia.havoc.security.oauth2.OAuth2UserInfo;
 import com.asphyxia.havoc.service.AuthenticationService;
 import com.asphyxia.havoc.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +33,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RefreshTokenService refreshTokenService;
 
     @Override
-    public UserResponse register(RegisterRequest request) {
-        Member member = Member.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(roleService.findDefaultRole().orElse(null))
-                .currency(0)
-                .build();
-        Member user = userRepository.save(member);
-        return UserResponse.fromUser(user);
+    public Member register(Member member) {
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setRole(roleService.findDefaultRole().orElse(null));
+        return userRepository.save(member);
+    }
+
+    @Override
+    public AuthenticationResponse googleAuthenticate(OAuth2UserInfo info) {
+        Member member = userRepository.findByEmail(info.getEmail()).orElseGet(() -> {
+            UUID uuid = UUID.randomUUID();
+            String encPassword = new BCryptPasswordEncoder().encode(uuid.toString());
+            return register(
+                    Member.builder()
+                            .email(info.getEmail())
+                            .password(encPassword)
+                            .username(info.getName())
+                            .build()
+            );
+
+        });
+
+        return authenticate(
+                AuthenticationRequest.builder()
+                        .email(member.getEmail())
+                        .password(member.getPassword())
+                        .build()
+        );
     }
 
     @Override
@@ -53,14 +71,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Member user = (Member) authentication.getPrincipal();
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user);
+        String accessToken = jwtUtils.generateTokenFromUsername(user.getEmail());
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
-        ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
+        String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
 
         return new AuthenticationResponse(
-                jwtCookie,
-                jwtRefreshCookie,
+                accessToken,
+                refreshToken,
                 UserResponse.fromUser(user)
         );
     }
