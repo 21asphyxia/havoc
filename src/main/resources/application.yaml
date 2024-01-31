@@ -27,6 +27,7 @@ spring:
           google:
             client-id: 209765627883-oqtujsuel0fda2pn1fs14hnf4pq728tn.apps.googleusercontent.com
             client-secret: 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
+            redirect-uri: 'http://localhost:8081/login/oauth2/code/google'
 havoc:
   app:
     jwtCookieName: havoc-jwt
