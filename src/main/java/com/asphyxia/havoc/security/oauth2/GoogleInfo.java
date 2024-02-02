@@ -1,5 +1,8 @@
 package com.asphyxia.havoc.security.oauth2;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 import java.util.Map;
 
 public class GoogleInfo extends OAuth2UserInfo {
