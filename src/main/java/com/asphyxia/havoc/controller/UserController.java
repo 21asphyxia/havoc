@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<UserResponse> assignRole(@RequestBody RoleRequestDTO request, @PathVariable Long id) {
         Role role = roleService.getByName(request.name()).orElse(null);
         Member member = userService.assignRole(id, role);
-        if (member == null && role == null) return ResponseEntity.badRequest().build();
+        if (member == null || role == null) return ResponseEntity.badRequest().build();
         else return new ResponseEntity<>(UserResponse.fromUser(member), HttpStatus.OK);
     }
 

@@ -1,9 +1,7 @@
 package com.asphyxia.havoc.dto.responses;
 
-import org.springframework.http.ResponseCookie;
-
 public record AuthenticationResponse(
-        ResponseCookie token,
-        ResponseCookie refreshToken,
+        String token,
+        String refreshToken,
         UserResponse user) {
 }

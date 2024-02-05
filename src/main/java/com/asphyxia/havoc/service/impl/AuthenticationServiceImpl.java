@@ -3,16 +3,15 @@ package com.asphyxia.havoc.service.impl;
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.domain.RefreshToken;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
-import com.asphyxia.havoc.dto.requests.RegisterRequest;
 import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
 import com.asphyxia.havoc.dto.responses.UserResponse;
+import com.asphyxia.havoc.exception.TokenRefreshException;
 import com.asphyxia.havoc.repository.UserRepository;
 import com.asphyxia.havoc.security.jwt.JwtUtils;
 import com.asphyxia.havoc.security.jwt.service.RefreshTokenService;
 import com.asphyxia.havoc.service.AuthenticationService;
 import com.asphyxia.havoc.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,16 +31,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RefreshTokenService refreshTokenService;
 
     @Override
-    public UserResponse register(RegisterRequest request) {
-        Member member = Member.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(roleService.findDefaultRole().orElse(null))
-                .currency(0)
-                .build();
-        Member user = userRepository.save(member);
-        return UserResponse.fromUser(user);
+    public Member register(Member member) {
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setRole(roleService.findDefaultRole().orElse(null));
+
+        return userRepository.save(member);
     }
 
     @Override
@@ -53,15 +47,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Member user = (Member) authentication.getPrincipal();
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user);
-
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
-        ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
+        String accessToken = jwtUtils.generateTokenFromUsername(user.getEmail());
+        String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
 
         return new AuthenticationResponse(
-                jwtCookie,
-                jwtRefreshCookie,
+                accessToken,
+                refreshToken,
                 UserResponse.fromUser(user)
         );
+    }
+
+    @Override
+    public AuthenticationResponse generateRefreshToken(String refreshToken) {
+        RefreshToken foundRefreshToken = refreshTokenService.findByToken(refreshToken)
+                .orElseThrow(() -> new TokenRefreshException(refreshToken, "Refresh token is not in database!"));
+        Member user = foundRefreshToken.getUser();
+        String accessToken = jwtUtils.generateTokenFromUsername(user.getEmail());
+
+        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user.getId());
+
+        return new AuthenticationResponse(accessToken, newRefreshToken.getToken(), UserResponse.fromUser(user));
     }
 }

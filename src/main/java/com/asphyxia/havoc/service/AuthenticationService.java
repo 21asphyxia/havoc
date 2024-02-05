@@ -1,16 +1,16 @@
 package com.asphyxia.havoc.service;
 
+import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
-import com.asphyxia.havoc.dto.requests.RegisterRequest;
 import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
-import com.asphyxia.havoc.dto.responses.UserResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface AuthenticationService {
 
-    UserResponse register(RegisterRequest user);
+    Member register(Member member);
 
     AuthenticationResponse authenticate(AuthenticationRequest user);
 
+    AuthenticationResponse generateRefreshToken(String refreshToken);
 }

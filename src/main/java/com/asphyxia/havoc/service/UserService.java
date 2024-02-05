@@ -14,6 +14,10 @@ public interface UserService {
 
     Optional<Member> getById(Long id);
 
+    Optional<Member> getByEmail(String email);
+
+    Optional<Member> getByUsername(String username);
+
     Member assignRole(Long id, Role role);
 
     Member update(Member member, Long id);
