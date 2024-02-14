@@ -23,10 +23,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getAll() {
-        List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        if (authorities.contains("VIEW_ROLES"))
-            return roleRepository.findAll();
-        else return null;
+        return roleRepository.findAll();
     }
 
     @Override

@@ -11,17 +11,10 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RoleSeeder implements CommandLineRunner {
+public class RoleSeeder {
 
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
-
-    @Override
-    public void run(String... args) {
-        if (roleRepository.count() == 0) {
-            seedRoles();
-        }
-    }
 
     public void seedRoles() {
         List<Role> roles = List.of(

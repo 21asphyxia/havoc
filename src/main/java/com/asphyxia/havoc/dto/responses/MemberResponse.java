@@ -2,14 +2,14 @@ package com.asphyxia.havoc.dto.responses;
 
 import com.asphyxia.havoc.domain.Member;
 
-public record UserResponse(
+public record MemberResponse(
         String username,
         String email,
         Integer currency,
         String role
 ) {
-    public static UserResponse fromUser(Member member) {
-        return new UserResponse(
+    public static MemberResponse fromMember(Member member) {
+        return new MemberResponse(
                 member.getUsername(),
                 member.getEmail(),
                 member.getCurrency(),
