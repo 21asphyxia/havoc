@@ -1,7 +1,7 @@
 package com.asphyxia.havoc.dto.responses;
 
 public record AuthenticationResponse(
-        String token,
-        String refreshToken,
-        UserResponse user) {
+        String access_token,
+        String refresh_token,
+        MemberResponse member) {
 }

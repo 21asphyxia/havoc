@@ -4,7 +4,7 @@ import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.domain.RefreshToken;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
 import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
-import com.asphyxia.havoc.dto.responses.UserResponse;
+import com.asphyxia.havoc.dto.responses.MemberResponse;
 import com.asphyxia.havoc.exception.TokenRefreshException;
 import com.asphyxia.havoc.repository.UserRepository;
 import com.asphyxia.havoc.security.jwt.JwtUtils;
@@ -53,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new AuthenticationResponse(
                 accessToken,
                 refreshToken,
-                UserResponse.fromUser(user)
+                MemberResponse.fromMember(user)
         );
     }
 
@@ -66,6 +66,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return new AuthenticationResponse(accessToken, newRefreshToken.getToken(), UserResponse.fromUser(user));
+        return new AuthenticationResponse(accessToken, newRefreshToken.getToken(), MemberResponse.fromMember(user));
     }
 }

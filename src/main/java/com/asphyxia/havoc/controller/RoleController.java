@@ -7,6 +7,7 @@ import com.asphyxia.havoc.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VIEW_ROLES')")
     public ResponseEntity<List<RoleResponse>> getAll() {
         List<Role> roles = roleService.getAll();
         if (roles.isEmpty()) return ResponseEntity.badRequest().build();
@@ -27,6 +29,7 @@ public class RoleController {
 
     @PostMapping
     public ResponseEntity<RoleResponse> save(@RequestBody RoleRequestDTO roleToSave) {
+        System.out.println();
         Role role = roleService.save(roleToSave.toRole());
         if (role == null) return ResponseEntity.badRequest().build();
         else return new ResponseEntity<>(RoleResponse.fromRole(role), HttpStatus.OK);

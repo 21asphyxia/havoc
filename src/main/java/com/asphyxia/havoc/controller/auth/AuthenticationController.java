@@ -2,10 +2,12 @@ package com.asphyxia.havoc.controller.auth;
 
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;
+import com.asphyxia.havoc.dto.requests.RefreshRequest;
 import com.asphyxia.havoc.dto.requests.RegisterRequest;
 import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
-import com.asphyxia.havoc.dto.responses.UserResponse;
+import com.asphyxia.havoc.dto.responses.MemberResponse;
 import com.asphyxia.havoc.service.AuthenticationService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +24,20 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         AuthenticationResponse authenticate = authenticationService.authenticate(request);
         return ResponseEntity.ok(authenticate);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<MemberResponse> register(@RequestBody @Valid RegisterRequest request) {
         Member member = authenticationService.register(request.toMember());
-        return ResponseEntity.ok(UserResponse.fromUser(member));
+        return ResponseEntity.ok(MemberResponse.fromMember(member));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody @NotBlank String refreshToken) {
-        return ResponseEntity.ok(authenticationService.generateRefreshToken(refreshToken));
+    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody @Valid RefreshRequest refreshToken) {
+        return ResponseEntity.ok(authenticationService.generateRefreshToken(refreshToken.getRefreshToken()));
     }
 }
 
