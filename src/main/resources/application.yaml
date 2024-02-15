@@ -5,7 +5,7 @@ server:
     include-binding-errors: always
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/havoc
+    url: jdbc:postgresql://postgres:5432/havoc
     username: asphyxia
     password: secret
     driver-class-name: org.postgresql.Driver
