@@ -1,3 +1,13 @@
+volumes:
+  jenkins_home:
+  sonarqube_data:
+  sonarqube_extensions:
+
+networks:
+  havoc-network:
+    driver: bridge
+
+
 services:
   postgres:
     image: 'postgres:latest'
@@ -7,3 +17,32 @@ services:
       - 'POSTGRES_USER=asphyxia'
     ports:
       - '5432:5432'
+    networks:
+      - havoc-network
+
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile-jenkins
+    container_name: havoc-jenkins
+    ports:
+      - '8085:8080'
+    environment:
+      JENKINS_OPTS: --prefix=/jenkins
+    volumes:
+      - type: volume
+        source: jenkins_home
+        target: /var/jenkins_home
+    networks:
+      - havoc-network
+
+  sonarqube:
+    image: 'sonarqube:latest'
+    container_name: havoc-sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      sonar.web.context: /sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
