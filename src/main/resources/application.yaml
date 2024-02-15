@@ -17,7 +17,7 @@ spring:
     sql-dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     enabled: true
-    url: jdbc:postgresql://localhost:5432/havoc
+    url: jdbc:postgresql://postgres:5432/havoc
     user: asphyxia
     password: secret
 havoc:
