@@ -61,6 +61,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponse generateRefreshToken(String refreshToken) {
         RefreshToken foundRefreshToken = refreshTokenService.findByToken(refreshToken)
                 .orElseThrow(() -> new TokenRefreshException(refreshToken, "Refresh token is not in database!"));
+
+        if (!foundRefreshToken.isValid()) {
+            throw new TokenRefreshException(refreshToken, "Refresh token is no longer valid");
+        }
+
         Member user = foundRefreshToken.getUser();
         String accessToken = jwtUtils.generateTokenFromUsername(user.getEmail());
 

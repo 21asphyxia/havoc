@@ -17,10 +17,12 @@ public class RefreshToken {
     @OneToOne
     private Member user;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String token;
 
-    @Column(nullable = false)
     private Instant expiryDate;
+
+    private boolean valid = true;
+
 
 }
