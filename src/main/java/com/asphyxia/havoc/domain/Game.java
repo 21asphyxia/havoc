@@ -17,4 +17,5 @@ public class Game {
     @GeneratedValue
     private Long id;
     private String name;
+    private String image;
 }
