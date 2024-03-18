@@ -1,4 +1,4 @@
-package com.asphyxia.havoc.controller.auth;
+package com.asphyxia.havoc.controller;
 
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.dto.requests.AuthenticationRequest;

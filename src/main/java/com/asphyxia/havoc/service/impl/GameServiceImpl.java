@@ -29,6 +29,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game getByName(String name) {
+        Game game = gameRepository.findByNameIgnoreCase(name).orElseThrow(() -> new RuntimeException("Game not found"));
+        game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage());
+        return game;
+    }
+
+    @Override
     public Game save(Game game, MultipartFile image) {
         String dir = "src/main/resources/static/images/games";
         String imageUrl = null;
