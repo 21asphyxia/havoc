@@ -34,6 +34,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game save(Game game, MultipartFile image) {
+        if (gameRepository.existsByNameLikeIgnoreCase(game.getName())) {
+            throw new RuntimeException("Game already exists");
+        }
         String dir = "src/main/resources/static/images/games";
         String imageUrl = null;
         try {

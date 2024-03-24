@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
     Optional<Game> findByNameIgnoreCase(String name);
+
+    boolean existsByNameLikeIgnoreCase(String name);
 }
