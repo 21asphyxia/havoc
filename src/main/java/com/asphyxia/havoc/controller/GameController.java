@@ -3,14 +3,13 @@ package com.asphyxia.havoc.controller;
 import com.asphyxia.havoc.domain.Game;
 import com.asphyxia.havoc.dto.requests.GameRequestDTO;
 import com.asphyxia.havoc.dto.responses.GameResponseDTO;
+import com.asphyxia.havoc.dto.responses.MessageResponse;
 import com.asphyxia.havoc.service.GameService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,15 +20,40 @@ public class GameController {
 
     private final GameService gameService;
 
+    @Value("${server.port}")
+    private String port;
+
     @GetMapping
     public ResponseEntity<List<GameResponseDTO>> getAll() {
         List<Game> games = gameService.getAll();
+        games.forEach(game -> game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage()));
         return new ResponseEntity<>(games.stream().map(GameResponseDTO::fromGame).toList(), HttpStatus.OK);
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<GameResponseDTO> save(GameRequestDTO gameToSave) {
-        Game game = gameService.save(gameToSave.toGame(), gameToSave.image()[0]);
+        Game game = gameService.save(gameToSave.toGame(), gameToSave.image());
+        game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage());
         return new ResponseEntity<>(GameResponseDTO.fromGame(game), HttpStatus.OK);
+    }
+
+    @PutMapping(value="/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<GameResponseDTO> update(@PathVariable Long id, GameRequestDTO gameToUpdate) {
+        Game game;
+        if (gameToUpdate.image() == null) {
+            game = gameService.update(gameToUpdate.toGame(), id);
+            game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage());
+        }
+        else {
+            game = gameService.update(gameToUpdate.toGame(), id, gameToUpdate.image());
+            game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage());
+        }
+        return new ResponseEntity<>(GameResponseDTO.fromGame(game), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
+        gameService.delete(id);
+        return new ResponseEntity<>(new MessageResponse("Game deleted successfully"), HttpStatus.NO_CONTENT);
     }
 }

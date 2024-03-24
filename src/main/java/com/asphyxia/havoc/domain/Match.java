@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,13 +18,15 @@ public class Match {
     @Id
     @GeneratedValue
     private Long id;
-    private LocalDate date;
+    private LocalDateTime dateTime;
     @ManyToOne
     private Member firstPlayer;
     @ManyToOne
     private Member secondPlayer;
     @ManyToOne
     private Game game;
-    @OneToOne
+    @OneToOne(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     private MatchResult result;
+    @OneToOne(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Declaration declaration;
 }

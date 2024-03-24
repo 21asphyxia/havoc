@@ -20,4 +20,6 @@ public class MatchResult {
     private Integer eloLoss;
     private Integer winnerScore;
     private Integer loserScore;
+    @OneToOne
+    private Match match;
 }

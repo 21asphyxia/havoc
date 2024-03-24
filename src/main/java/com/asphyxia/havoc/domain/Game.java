@@ -1,9 +1,9 @@
 package com.asphyxia.havoc.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +18,10 @@ public class Game {
     private Long id;
     private String name;
     private String image;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<GameElo> elos;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Match> matches;
 }

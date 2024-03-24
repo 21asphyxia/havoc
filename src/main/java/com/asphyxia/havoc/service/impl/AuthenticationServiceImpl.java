@@ -32,6 +32,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Member register(Member member) {
+        if (userRepository.existsByEmail(member.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken!");
+        }
+
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         member.setRole(roleService.findDefaultRole().orElse(null));
 

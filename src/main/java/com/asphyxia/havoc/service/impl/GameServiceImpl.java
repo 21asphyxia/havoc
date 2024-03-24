@@ -5,10 +5,10 @@ import com.asphyxia.havoc.repository.GameRepository;
 import com.asphyxia.havoc.service.GameService;
 import com.asphyxia.havoc.service.ImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -18,21 +18,18 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final ImageService imageService;
 
-    @Value("${server.port}")
-    private String port;
-
     @Override
     public List<Game> getAll() {
-        List<Game> games = gameRepository.findAll();
-        games.forEach(game -> game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage()));
-        return games;
+        return gameRepository.findAll();
     }
 
     @Override
     public Game getByName(String name) {
-        Game game = gameRepository.findByNameIgnoreCase(name).orElseThrow(() -> new RuntimeException("Game not found"));
-        game.setImage("http://localhost:" + port + "/api/v1/images/games/" + game.getImage());
-        return game;
+        return gameRepository.findByNameIgnoreCase(name).orElseThrow(() -> new RuntimeException("Game not found"));
+    }
+
+    public Game getById(Long id) {
+        return gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
     }
 
     @Override
@@ -51,7 +48,44 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game update(Game game, Long id) {
+        Game oldGame = getById(id);
         game.setId(id);
+        game.setImage(oldGame.getImage());
         return gameRepository.save(game);
+    }
+
+    @Override
+    public Game update(Game game, Long id, MultipartFile image) {
+        game.setId(id);
+        String dir = "src/main/resources/static/images/games";
+        String imageUrl = null;
+        try {
+            imageUrl = imageService.saveImageToStorage(dir, image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        game.setImage(imageUrl);
+
+        Game oldGame = getById(id);
+        try {
+            imageService.deleteImage("src/main/resources/static/images/games", oldGame.getImage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return gameRepository.save(game);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Game game = getById(id);
+        try {
+            imageService.deleteImage("src/main/resources/static/images/games", game.getImage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        gameRepository.delete(game);
     }
 }

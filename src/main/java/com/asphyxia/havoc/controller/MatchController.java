@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/matches")
@@ -21,11 +22,11 @@ public class MatchController {
     public ResponseEntity<MatchResponse> joinMatchmaking(@PathVariable String game) {
         Match match = matchService.findMatch(game);
         return ResponseEntity.ok(MatchResponse.builder()
-                .firstPlayer(match.getFirstPlayer().getEmail())
-                .secondPlayer(match.getSecondPlayer() == null ? null : match.getSecondPlayer().getEmail())
+                .id(match.getId())
+                .firstPlayer(match.getFirstPlayer().getUsername())
+                .secondPlayer(match.getSecondPlayer() == null ? null : match.getSecondPlayer().getUsername())
                 .game(match.getGame().getName())
                 .status(match.getSecondPlayer() == null ? "WAITING" : "READY")
                 .build());
     }
-
 }

@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710941047199-1
+      author: mouad (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: declaration_seq
+            startValue: 1
+  - changeSet:
+      id: 1710941047199-2
+      author: mouad (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_declaration
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: member_id
+                  type: BIGINT
+              - column:
+                  name: image
+                  type: VARCHAR(255)
+            tableName: declaration
+  - changeSet:
+      id: 1710941047199-3
+      author: mouad (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: member_id
+            baseTableName: declaration
+            constraintName: FK_DECLARATION_ON_MEMBER
+            referencedColumnNames: id
+            referencedTableName: member
+

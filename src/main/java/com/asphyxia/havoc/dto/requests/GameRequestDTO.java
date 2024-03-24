@@ -9,7 +9,7 @@ import java.util.List;
 
 public record GameRequestDTO(
         String name,
-        MultipartFile[] image
+        MultipartFile image
 ) {
     public Game toGame() {
         return Game.builder()

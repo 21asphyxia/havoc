@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record MatchResponse(
+        Long id,
         String firstPlayer,
         String secondPlayer,
         String game,
