@@ -39,7 +39,7 @@ public class GameEloServiceImpl {
     }
 
     public List<GameElo> getAllByGame(String game) {
-        return gameEloRepository.findAllByGame(gameService.getByName(game));
+        return gameEloRepository.findAllByGameOrderByEloDesc(gameService.getByName(game));
 
     }
 }

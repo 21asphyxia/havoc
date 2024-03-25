@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface GameEloRepository extends JpaRepository<GameElo, Long> {
     Optional<GameElo> findByGameAndMember(Game game, Member member);
 
-    List<GameElo> findAllByGame(Game game);
+    List<GameElo> findAllByGameOrderByEloDesc(Game game);
 }

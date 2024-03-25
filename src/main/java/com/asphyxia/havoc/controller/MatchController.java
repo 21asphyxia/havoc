@@ -26,7 +26,7 @@ public class MatchController {
                 .firstPlayer(match.getFirstPlayer().getUsername())
                 .secondPlayer(match.getSecondPlayer() == null ? null : match.getSecondPlayer().getUsername())
                 .game(match.getGame().getName())
-                .status(match.getSecondPlayer() == null ? "WAITING" : "READY")
+                .status(match.getSecondPlayer() == null ? "WAITING" : match.getDeclaration() != null ? "DECLARED" : "READY")
                 .build());
     }
 }
