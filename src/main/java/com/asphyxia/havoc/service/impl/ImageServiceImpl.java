@@ -1,5 +1,6 @@
 package com.asphyxia.havoc.service.impl;
 
+import com.asphyxia.havoc.service.ImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,11 +11,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
-public class ImageServiceImpl implements com.asphyxia.havoc.service.ImageService {
+public class ImageServiceImpl implements ImageService {
 
     @Override
     public String saveImageToStorage(String uploadDirectory, MultipartFile imageFile) throws IOException {
-        String uniqueFileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+        String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
         Path uploadPath = Path.of(uploadDirectory);
         Path filePath = uploadPath.resolve(uniqueFileName);

@@ -4,7 +4,6 @@ import com.asphyxia.havoc.domain.Role;
 import com.asphyxia.havoc.repository.AuthorityRepository;
 import com.asphyxia.havoc.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -14,6 +14,7 @@ public interface GameService {
     Game save(Game game, MultipartFile image);
 
     Game update(Game game, Long id);
+
     Game update(Game game, Long id, MultipartFile image);
 
     void delete(Long id);

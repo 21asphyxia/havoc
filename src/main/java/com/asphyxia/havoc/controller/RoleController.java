@@ -28,6 +28,7 @@ public class RoleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_ROLE')")
     public ResponseEntity<RoleResponse> save(@RequestBody RoleRequestDTO roleToSave) {
         System.out.println();
         Role role = roleService.save(roleToSave.toRole());
@@ -36,6 +37,7 @@ public class RoleController {
     }
 
     @PutMapping("/grant_authorities/{id}")
+    @PreAuthorize("hasAuthority('GRANT_AUTHORITY_TO_ROLE')")
     public ResponseEntity<RoleResponse> grantAuthorities(@RequestBody RoleRequestDTO rolesAuthorities, @PathVariable Long id) {
         Role role = roleService.grantAuthorities(rolesAuthorities.toRole().getAuthorities(), id);
         if (role == null) return ResponseEntity.badRequest().build();
@@ -43,6 +45,7 @@ public class RoleController {
     }
 
     @PutMapping("/revoke_authorities/{id}")
+    @PreAuthorize("hasAuthority('REVOKE_AUTHORITY_FROM_ROLE')")
     public ResponseEntity<RoleResponse> revokeAuthorities(@RequestBody RoleRequestDTO rolesAuthorities, @PathVariable Long id) {
         Role role = roleService.revokeAuthorities(rolesAuthorities.toRole().getAuthorities(), id);
         if (role == null) return ResponseEntity.badRequest().build();

@@ -5,6 +5,7 @@ import com.asphyxia.havoc.domain.GameElo;
 import com.asphyxia.havoc.domain.MatchResult;
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.repository.GameEloRepository;
+import com.asphyxia.havoc.service.GameEloService;
 import com.asphyxia.havoc.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class GameEloServiceImpl {
+public class GameEloServiceImpl implements GameEloService {
     private final GameEloRepository gameEloRepository;
     private final GameService gameService;
 
+    @Override
     public void updateElo(Game game, Member winner, Member loser, MatchResult result) {
         gameEloRepository.findByGameAndMember(game, winner).ifPresentOrElse(gameElo -> {
             gameElo.setElo(gameElo.getElo() + result.getEloGain());
@@ -38,6 +40,7 @@ public class GameEloServiceImpl {
                 .build());
     }
 
+    @Override
     public List<GameElo> getAllByGame(String game) {
         return gameEloRepository.findAllByGameOrderByEloDesc(gameService.getByName(game));
 

@@ -1,18 +1,14 @@
 package com.asphyxia.havoc.controller;
 
-import com.asphyxia.havoc.domain.Game;
 import com.asphyxia.havoc.domain.GameElo;
-import com.asphyxia.havoc.dto.requests.GameRequestDTO;
 import com.asphyxia.havoc.dto.responses.GameEloResponse;
-import com.asphyxia.havoc.dto.responses.GameResponseDTO;
-import com.asphyxia.havoc.dto.responses.MessageResponse;
-import com.asphyxia.havoc.service.GameService;
-import com.asphyxia.havoc.service.impl.GameEloServiceImpl;
+import com.asphyxia.havoc.service.GameEloService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LeaderboardController {
 
-    private final GameEloServiceImpl gameEloService;
+    private final GameEloService gameEloService;
 
     @GetMapping("/{game}")
     public ResponseEntity<List<GameEloResponse>> getAll(@PathVariable String game) {

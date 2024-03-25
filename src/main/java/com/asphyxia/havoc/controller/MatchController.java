@@ -2,21 +2,20 @@ package com.asphyxia.havoc.controller;
 
 import com.asphyxia.havoc.domain.Match;
 import com.asphyxia.havoc.dto.responses.MatchResponse;
-import com.asphyxia.havoc.service.impl.MatchServiceImpl;
+import com.asphyxia.havoc.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/matches")
 @RequiredArgsConstructor
 public class MatchController {
 
-    private final MatchServiceImpl matchService;
+    private final MatchService matchService;
 
     @PostMapping("matchmaking/{game}/join")
     public ResponseEntity<MatchResponse> joinMatchmaking(@PathVariable String game) {

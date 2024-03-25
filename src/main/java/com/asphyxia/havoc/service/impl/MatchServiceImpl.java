@@ -5,7 +5,7 @@ import com.asphyxia.havoc.domain.Match;
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.repository.MatchRepository;
 import com.asphyxia.havoc.service.GameService;
-import com.asphyxia.havoc.service.ImageService;
+import com.asphyxia.havoc.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,12 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class MatchServiceImpl {
+public class MatchServiceImpl implements MatchService {
 
     private final MatchRepository matchRepository;
     private final GameService gameService;
 
-    private final ImageService imageService;
-
+    @Override
     public Match findMatch(String game) {
         Game foundGame = gameService.getByName(game);
         Member loggedInMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -55,10 +54,12 @@ public class MatchServiceImpl {
         return newMatch;
     }
 
+    @Override
     public Match getMatchById(Long id) {
         return matchRepository.findById(id).orElseThrow(() -> new RuntimeException("Match not found"));
     }
 
+    @Override
     public Match updateMatch(Match match) {
         return matchRepository.save(match);
     }

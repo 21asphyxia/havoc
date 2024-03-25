@@ -28,7 +28,7 @@ public record DeclarationResponse(
                 .build();
     }
 
-    public static List<DeclarationResponse> fromDeclarations(List<Declaration> declarations, String url){
+    public static List<DeclarationResponse> fromDeclarations(List<Declaration> declarations, String url) {
         return declarations.stream()
                 .map(declaration -> fromDeclaration(declaration, url))
                 .toList();

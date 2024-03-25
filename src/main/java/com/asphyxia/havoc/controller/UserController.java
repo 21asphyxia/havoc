@@ -9,6 +9,7 @@ import com.asphyxia.havoc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class UserController {
     private final RoleService roleService;
 
     @PutMapping("/assign_role/{id}")
+    @PreAuthorize("hasAuthority('ASSIGN_ROLE')")
     public ResponseEntity<MemberResponse> assignRole(@RequestBody RoleRequestDTO request, @PathVariable Long id) {
         Role role = roleService.getByName(request.name()).orElse(null);
         Member member = userService.assignRole(id, role);

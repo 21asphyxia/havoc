@@ -8,7 +8,6 @@ import com.asphyxia.havoc.dto.responses.AuthenticationResponse;
 import com.asphyxia.havoc.dto.responses.MemberResponse;
 import com.asphyxia.havoc.service.AuthenticationService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

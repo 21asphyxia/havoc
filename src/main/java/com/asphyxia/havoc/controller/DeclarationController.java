@@ -3,11 +3,12 @@ package com.asphyxia.havoc.controller;
 import com.asphyxia.havoc.domain.Match;
 import com.asphyxia.havoc.dto.responses.DeclarationResponse;
 import com.asphyxia.havoc.dto.responses.MatchResponse;
-import com.asphyxia.havoc.service.impl.DeclarationServiceImpl;
+import com.asphyxia.havoc.service.DeclarationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,12 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeclarationController {
 
-    private final DeclarationServiceImpl declarationService;
+    private final DeclarationService declarationService;
 
     @Value("${server.port}")
     private String port;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('SEE_DECLARATIONS')")
     public ResponseEntity<List<DeclarationResponse>> getAll() {
         List<DeclarationResponse> declarations = DeclarationResponse.fromDeclarations(declarationService.getAllDeclarations(), "http://localhost:" + port + "/api/v1/images/declarations/");
         return new ResponseEntity<>(declarations, HttpStatus.OK);
@@ -42,6 +44,7 @@ public class DeclarationController {
     }
 
     @PostMapping("/{declarationId}/approve")
+    @PreAuthorize("hasAuthority('APPROVE_DECLARATION')")
     public ResponseEntity<DeclarationResponse> approveDeclaration(@PathVariable Long declarationId) {
         return ResponseEntity.ok(DeclarationResponse.fromDeclaration(declarationService.approveDeclaration(declarationId), "http://localhost:" + port + "/api/v1/images/declarations/"));
     }

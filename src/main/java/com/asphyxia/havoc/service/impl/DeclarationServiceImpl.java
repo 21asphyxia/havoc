@@ -5,6 +5,7 @@ import com.asphyxia.havoc.domain.Match;
 import com.asphyxia.havoc.domain.MatchResult;
 import com.asphyxia.havoc.domain.Member;
 import com.asphyxia.havoc.repository.DeclarationRepository;
+import com.asphyxia.havoc.service.DeclarationService;
 import com.asphyxia.havoc.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,24 +16,28 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class DeclarationServiceImpl {
+public class DeclarationServiceImpl implements DeclarationService {
     private final DeclarationRepository declarationRepository;
     private final MatchServiceImpl matchService;
     private final ImageService imageService;
     private final GameEloServiceImpl gameEloService;
 
+    @Override
     public List<Declaration> getAllDeclarations() {
         return declarationRepository.findAll();
     }
 
+    @Override
     public Declaration getDeclarationById(Long id) {
         return declarationRepository.findById(id).orElseThrow(() -> new RuntimeException("Declaration not found"));
     }
 
+    @Override
     public boolean existsByMatch(Match match) {
         return declarationRepository.existsByMatch(match);
     }
 
+    @Override
     public Declaration save(Long matchId, MultipartFile image) {
         Match match = matchService.getMatchById(matchId);
         if (existsByMatch(match)) throw new IllegalArgumentException("Declaration already exists");
@@ -56,6 +61,7 @@ public class DeclarationServiceImpl {
 
     }
 
+    @Override
     public Declaration approveDeclaration(Long declarationId) {
         Declaration declaration = getDeclarationById(declarationId);
         MatchResult result = MatchResult.builder()
